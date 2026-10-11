@@ -1,0 +1,161 @@
+@import "@fontsource-variable/inter";
+@import "leaflet/dist/leaflet.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand: #6b4eff;
+  --brand-dark: #5534e8;
+  --brand-gradient: linear-gradient(to right, #7b5cff 0%, #6b4eff 50%, #5534e8 100%);
+  --font-inter: "Inter Variable";
+  --header-h: 80px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-white text-ink antialiased;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    font-feature-settings: "cv11", "ss01";
+  }
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  :focus-visible {
+    outline: 2px solid #222;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .page-gutter {
+    @apply px-6 sm:px-10 lg:px-20;
+  }
+  .container-narrow {
+    @apply mx-auto w-full max-w-[1280px] px-6 sm:px-10 lg:px-20;
+  }
+  .btn-brand {
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3.5 text-base font-semibold text-white transition-transform duration-100 active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-40;
+    background: var(--brand-gradient);
+  }
+  .btn-dark {
+    @apply inline-flex items-center justify-center rounded-lg bg-ink px-6 py-3.5 text-base font-semibold text-white transition-transform duration-100 hover:bg-black active:scale-[0.96] disabled:cursor-not-allowed disabled:bg-hairline;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-lg border border-ink bg-white px-6 py-3 text-base font-semibold text-ink transition-transform duration-100 hover:bg-faint active:scale-[0.96];
+  }
+  .link-underline {
+    @apply font-semibold underline underline-offset-2 hover:text-black;
+  }
+  .skeleton {
+    @apply animate-shimmer bg-[#ebebeb];
+    background-image: linear-gradient(to right, #ebebeb 0%, #f5f5f5 20%, #ebebeb 40%, #ebebeb 100%);
+    background-size: 936px 100%;
+  }
+  .field-input {
+    @apply w-full rounded-lg border border-[#B0B0B0] px-3 py-3.5 text-base text-ink outline-none transition-shadow placeholder:text-muted focus:border-ink focus:shadow-ring;
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* ---- Leaflet price pins ---- */
+.leaflet-container {
+  font-family: inherit;
+  background: #e8eaed;
+}
+.leaflet-control-attribution {
+  font-size: 10px;
+}
+.nestly-pin {
+  background: transparent !important;
+  border: 0 !important;
+}
+.nestly-pin > div {
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  white-space: nowrap;
+  align-items: center;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 28px;
+  background: #fff;
+  color: #222;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: rgba(0, 0, 0, 0.04) 0 0 0 1px, rgba(0, 0, 0, 0.18) 0 2px 4px;
+  transition: transform 150ms cubic-bezier(0.2, 0, 0, 1), background 150ms, color 150ms;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.nestly-pin > div:hover,
+.nestly-pin.is-hover > div {
+  transform: translate(-50%, -50%) scale(1.077);
+  z-index: 10;
+}
+.nestly-pin.is-active > div,
+.nestly-pin.is-hover > div {
+  background: #222;
+  color: #fff;
+}
+.nestly-pin.is-visited > div {
+  background: #ebebeb;
+}
+.nestly-pin.is-active.is-visited > div,
+.nestly-pin.is-hover.is-visited > div {
+  background: #222;
+}
+.nestly-home-pin > div {
+  transform: translate(-50%, -50%);
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  background: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 0 0 10px rgba(107, 78, 255, 0.2), 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+.leaflet-popup-content-wrapper.nestly-popup,
+.nestly-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.nestly-popup .leaflet-popup-content {
+  margin: 0;
+  width: 327px !important;
+}
+.nestly-popup .leaflet-popup-tip-container {
+  display: none;
+}
+.leaflet-bar a {
+  color: #222;
+}
+.leaflet-touch .leaflet-bar {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  overflow: hidden;
+}

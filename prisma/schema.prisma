@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  image        String?
+  bio          String?
+  work         String?
+  languages    String?
+  location     String?
+  isSuperhost  Boolean       @default(false)
+  responseRate Int           @default(100)
+  responseTime String        @default("within an hour")
+  createdAt    DateTime      @default(now())
+  listings     Listing[]
+  reservations Reservation[]
+  reviews      Review[]
+  wishlists    Wishlist[]
+}
+
+model Listing {
+  id            String         @id @default(cuid())
+  hostId        String
+  host          User           @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  title         String
+  description   String
+  propertyType  String
+  roomType      String
+  categories    String
+  city          String
+  region        String
+  country       String
+  lat           Float
+  lng           Float
+  guests        Int
+  bedrooms      Int
+  beds          Int
+  baths         Float
+  price         Int
+  cleaningFee   Int            @default(0)
+  amenities     String         @default("[]")
+  highlights    String         @default("[]")
+  ratingAvg     Float          @default(0)
+  reviewCount   Int            @default(0)
+  guestFavorite Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  images        ListingImage[]
+  reservations  Reservation[]
+  reviews       Review[]
+  wishlistItems WishlistItem[]
+
+  @@index([country])
+  @@index([price])
+}
+
+model ListingImage {
+  id        String  @id @default(cuid())
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  url       String
+  position  Int
+
+  @@index([listingId])
+}
+
+model Reservation {
+  id           String   @id @default(cuid())
+  listingId    String
+  listing      Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  guestId      String
+  guest        User     @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  checkIn      DateTime
+  checkOut     DateTime
+  adults       Int      @default(1)
+  children     Int      @default(0)
+  infants      Int      @default(0)
+  pets         Int      @default(0)
+  nightlyPrice Int
+  nights       Int
+  cleaningFee  Int
+  serviceFee   Int
+  totalPrice   Int
+  status       String   @default("confirmed")
+  createdAt    DateTime @default(now())
+  review       Review?
+
+  @@index([listingId, checkIn])
+  @@index([guestId])
+}
+
+model Review {
+  id            String       @id @default(cuid())
+  listingId     String
+  listing       Listing      @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  authorId      String
+  author        User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  reservationId String?      @unique
+  reservation   Reservation? @relation(fields: [reservationId], references: [id], onDelete: SetNull)
+  rating        Int
+  cleanliness   Int
+  accuracy      Int
+  checkIn       Int
+  communication Int
+  location      Int
+  value         Int
+  comment       String
+  createdAt     DateTime     @default(now())
+
+  @@index([listingId])
+}
+
+model Wishlist {
+  id        String         @id @default(cuid())
+  ownerId   String
+  owner     User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name      String
+  createdAt DateTime       @default(now())
+  items     WishlistItem[]
+}
+
+model WishlistItem {
+  wishlistId String
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@id([wishlistId, listingId])
+}
