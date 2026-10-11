@@ -23,6 +23,35 @@ Then open <http://localhost:3000>. Requires Node 18.18+ (tested on Node 22).
 - `npm run seed` is idempotent: it wipes and re-creates all data.
 - Other scripts: `npm run typecheck`, `npm run lint`, `npm run build && npm start`.
 
+## Deploy (public URL on Railway)
+
+The repo is ready for [Railway](https://railway.com). `railway.json` sets the build and start commands,
+and `npm run start:prod` (`scripts/start.mjs`) does the rest on every boot:
+
+- puts the SQLite database, uploaded photos and an auto-generated login secret on Railway's persistent volume
+- applies database migrations
+- loads the demo data the first time only, so redeploys never wipe bookings or listings
+- sets the sign-in URL from the domain Railway gives you
+
+No environment variables are required.
+
+1. Sign in at <https://railway.com> with your GitHub account.
+2. **New Project → Deploy from GitHub repo → `phil0198/nestly`**. Allow Railway access to the repo if asked.
+   If the deploy uses the wrong branch, open the service's **Settings → Source** and choose
+   `claude/peaceful-ride-lt7ntb`.
+3. Add storage: right-click the service (or open the command palette with ⌘K / Ctrl+K) → **Add Volume**,
+   and set the mount path to `/data`.
+4. Get a URL: **Settings → Networking → Generate Domain**.
+5. Wait for the deploy to turn green (the first build takes a few minutes), then open the domain.
+   Log in with `guest@nestly.dev` / `password123`.
+
+Railway's trial credit covers trying it out; keeping it running needs the Hobby plan (about $5/month).
+
+Without a volume the site still works, but the database resets to the demo data on every redeploy.
+
+The same start script works on any host with a persistent disk (Render, Fly.io, a VPS): set
+`DATA_DIR` to the disk's path and `NEXTAUTH_URL` to the site's public URL.
+
 ## Test accounts
 
 All seeded accounts use the password **`password123`**.

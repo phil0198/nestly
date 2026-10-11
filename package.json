@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "seed": "tsx prisma/seed.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "start:prod": "node scripts/start.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
@@ -20,8 +21,10 @@
     "leaflet": "1.9.4",
     "next": "15.5.27",
     "next-auth": "4.24.13",
+    "prisma": "6.19.3",
     "react": "19.1.1",
     "react-dom": "19.1.1",
+    "tsx": "4.20.6",
     "zod": "3.25.76"
   },
   "devDependencies": {
@@ -34,9 +37,10 @@
     "eslint": "9.36.0",
     "eslint-config-next": "15.5.27",
     "postcss": "8.5.6",
-    "prisma": "6.19.3",
     "tailwindcss": "3.4.19",
-    "tsx": "4.20.6",
     "typescript": "5.9.2"
+  },
+  "engines": {
+    "node": ">=20.9"
   }
 }
