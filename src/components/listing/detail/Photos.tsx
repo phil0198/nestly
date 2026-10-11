@@ -14,7 +14,6 @@ function Img({ src, alt, className, onClick }: { src: string; alt: string; class
       <img
         src={src}
         alt={alt}
-        onError={(e) => (e.currentTarget.style.visibility = "hidden")}
         className="h-full w-full object-cover text-transparent transition-[filter] duration-200 group-hover:brightness-[.85]"
       />
     </button>

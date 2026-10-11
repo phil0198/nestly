@@ -73,8 +73,10 @@ The login modal also has a **Continue with demo guest account** shortcut.
 - About 520 reservations (past and upcoming, which block calendar dates) and about 380 reviews with
   category scores
 
-The seed uses a fixed random seed, so it produces the same data on every run. Photos are stable
-`https://picsum.photos/seed/<id>/1200/800` URLs, with 6–9 per listing. Avatars come from `i.pravatar.cc`,
+The seed uses a fixed random seed, so it produces the same data on every run. Listing photos are free-licence
+house photos from [Pexels](https://www.pexels.com/license/), with 6–9 per listing: a cover exterior matched to the
+property type and setting (cabins, pool villas, beach houses, chalets, domes, castles…), then living room,
+bedroom, kitchen, bathroom and outdoor shots. The ID lists live in `src/lib/photos.ts`. Avatars come from `i.pravatar.cc`,
 with initials as a fallback.
 
 ## What's implemented
@@ -201,7 +203,7 @@ with initials as a fallback.
   - Shadows: menu `0 2px 16px rgba(0,0,0,.12)`, booking card `0 6px 16px rgba(0,0,0,.12)`, floating
     panels `0 6px 20px rgba(0,0,0,.2)`.
   - Motion: 200ms `cubic-bezier(.2,0,0,1)` transitions, and a 400ms slide-up for modals.
-- **Images:** plain `<img>` with lazy loading instead of `next/image`, so remote picsum photos and
+- **Images:** plain `<img>` with lazy loading instead of `next/image`, so remote Pexels photos and
   local uploads need no loader configuration.
 - **Uploads** are written to `./uploads` (gitignored) and served by `/api/uploads/[file]`, which only
   accepts UUID filenames. They work the same way in `next dev` and `next start`. Uploads must be images,

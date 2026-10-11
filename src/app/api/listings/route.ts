@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getUserId } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { PEXELS_HOST } from "@/lib/photos";
 import { AMENITY_BY_ID, CATEGORY_BY_SLUG, PROPERTY_TYPES, ROOM_TYPES } from "@/lib/constants";
 
 const imageUrl = z
   .string()
-  .refine((u) => u.startsWith("/api/uploads/") || /^https:\/\/picsum\.photos\//.test(u), "Invalid photo URL.");
+  .refine((u) => u.startsWith("/api/uploads/") || u.startsWith(`https://${PEXELS_HOST}/photos/`), "Invalid photo URL.");
 
 const listingSchema = z.object({
   propertyType: z.enum(PROPERTY_TYPES.map((p) => p.id) as [string, ...string[]]),

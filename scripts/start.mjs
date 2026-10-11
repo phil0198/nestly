@@ -39,6 +39,7 @@ function run(cmd, args) {
 
 run(bin("prisma"), ["migrate", "deploy"]);
 run(bin("tsx"), ["prisma/seed-if-empty.ts"]);
+run(bin("tsx"), ["prisma/refresh-photos.ts"]);
 
 const port = env.PORT || "3000";
 console.log(`Starting Nestly on port ${port}${env.NEXTAUTH_URL ? ` (${env.NEXTAUTH_URL})` : ""}`);

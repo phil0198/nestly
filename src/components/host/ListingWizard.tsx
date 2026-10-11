@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { AMENITIES, CATEGORIES, DESTINATIONS, PROPERTY_TYPES, ROOM_TYPE_DESCRIPTIONS, ROOM_TYPES, type RoomType } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { samplePhotos } from "@/lib/photos";
 import { Icon } from "../icons";
 import { LogoMark } from "../Logo";
 import { Stepper } from "../ui/Stepper";
@@ -238,8 +239,8 @@ export function ListingWizard() {
   }
 
   function useSamplePhotos() {
-    const seed = Math.random().toString(36).slice(2, 8);
-    set({ images: [...draft.images, ...Array.from({ length: 5 }, (_, i) => `https://picsum.photos/seed/new-${seed}-${i}/1200/800`)] });
+    const fresh = samplePhotos(Math.floor(Math.random() * 1000)).filter((u) => !draft.images.includes(u));
+    set({ images: [...draft.images, ...fresh] });
   }
 
   async function publish() {

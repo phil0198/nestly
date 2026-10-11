@@ -54,7 +54,6 @@ export function ImageCarousel({
             alt={i === 0 ? alt : ""}
             loading={i === 0 ? "eager" : "lazy"}
             draggable={false}
-            onError={(e) => (e.currentTarget.style.visibility = "hidden")}
             className="h-full w-full shrink-0 object-cover text-transparent"
           />
         ))}

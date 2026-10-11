@@ -1,6 +1,7 @@
 import { PrismaClient, type User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { addDays, startOfDay, subDays } from "date-fns";
+import { listingPhotos } from "../src/lib/photos";
 
 const prisma = new PrismaClient();
 
@@ -233,10 +234,6 @@ const REVIEW_TAILS = [
   " Great for families too.",
 ];
 
-function photo(seed: string, w = 1200, h = 800) {
-  return `https://picsum.photos/seed/${seed}/${w}/${h}`;
-}
-
 
 async function main() {
   console.log("Seeding Nestly…");
@@ -330,7 +327,7 @@ async function main() {
       const lng = dest.lng + between(-dest.spread, dest.spread) * 1.3;
       const hostIdx = n % 3 === 2 ? (dest.host + 1 + n) % hosts.length : dest.host;
       const imageCount = int(6, 9);
-      const slug = `${dest.city.toLowerCase().replace(/[^a-z]/g, "")}-${n}`;
+      const photos = listingPhotos({ propertyType, categories: cats }, listingCount * 7 + n, imageCount);
 
       const listing = await prisma.listing.create({
         data: {
@@ -355,7 +352,7 @@ async function main() {
           highlights: JSON.stringify(highlights),
           createdAt: subDays(today, int(30, 900)),
           images: {
-            create: Array.from({ length: imageCount }, (_, i) => ({ url: photo(`${slug}-${i}`), position: i })),
+            create: photos.map((url, position) => ({ url, position })),
           },
         },
       });
